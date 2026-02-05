@@ -45,7 +45,7 @@ function App() {
         >
           VERSUSITE
         </h1>
-        {tournament && <div style={{ color: '#666' }}>Round {tournament.currentRoundIndex + 1}</div>}
+
       </header>
 
       <main className="container">

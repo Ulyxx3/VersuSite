@@ -112,6 +112,9 @@ export default function Creator({ onStart, onLoad }) {
                         placeholder="Paste URLs one per line..."
                         style={{ width: '100%', height: '100px', background: '#222', color: 'white', border: '1px solid #444', padding: '0.5rem' }}
                     />
+                    <small style={{ color: '#888', display: 'block', marginTop: '0.2rem' }}>
+                        Tip: Use <a href="https://www.youtubeplaylistanalyzer.com" target="_blank" rel="noreferrer" style={{ color: '#4a9eff' }}>youtubeplaylistanalyzer.com</a> to extract links from a playlist.
+                    </small>
                     <button className="btn btn-primary" style={{ marginTop: '0.5rem' }} onClick={handleBulkAdd}>Process Bulk List</button>
                 </details>
             </div>

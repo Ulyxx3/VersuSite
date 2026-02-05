@@ -4,6 +4,13 @@ import { ITEM_TYPES, getNextMatch, resolveMatch } from '../utils/tournamentLogic
 export default function BattleArena({ tournament, onUpdate, onComplete }) {
     const [match, setMatch] = useState(null);
 
+    // Calculate match stats
+    const totalMatches = tournament ? tournament.items.length - 1 : 0;
+    const completedMatches = tournament ? tournament.rounds.reduce((acc, round) => {
+        return acc + round.filter(m => m.winner).length;
+    }, 0) : 0;
+    const remainingMatches = totalMatches - completedMatches;
+
     useEffect(() => {
         if (!tournament) return;
         if (tournament.completed) {
@@ -11,16 +18,6 @@ export default function BattleArena({ tournament, onUpdate, onComplete }) {
             return;
         }
         const next = getNextMatch(tournament);
-        if (!next) {
-            // Round might be over, force logic to advance?
-            // Wait, resolveMatch handles advancement. 
-            // If getNextMatch returns null but not completed, it usually means we need to trigger round transition?
-            // In my logic `resolveMatch` automatically pushes new rounds.
-            // So if next is null and !completed, something is weird or we just finished the final match?
-            // Ah, `resolveMatch` sets `completed = true` if final match finishes.
-            // So this state should handle itself.
-            console.log("No match found but not completed?", tournament);
-        }
         setMatch(next);
     }, [tournament, onComplete]);
 
@@ -79,33 +76,45 @@ export default function BattleArena({ tournament, onUpdate, onComplete }) {
                 <button
                     onClick={() => handleVote(item.id)}
                     style={{
-                        padding: '2rem',
-                        fontSize: '1.5rem',
+                        padding: '1.5rem',
+                        fontSize: '1.2rem',
                         fontWeight: 'bold',
                         background: isRed ? 'var(--color-primary-red)' : 'var(--color-primary-blue)',
                         color: 'white',
                         border: 'none',
                         cursor: 'pointer',
-                        transition: 'filter 0.3s'
+                        transition: 'filter 0.3s',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: '100%'
                     }}
                     className="vote-btn"
+                    title={item.content}
                 >
-                    VOTE {isRed ? 'RED' : 'BLUE'}
+                    {item.content}
                 </button>
             </div>
         );
     };
 
     return (
-        <div style={{ height: 'calc(100vh - 100px)', display: 'flex', gap: '1rem', padding: '1rem' }}>
-            {/* If p2 is null (Bye), auto-skip? Logic should have handled this. */}
-            <RenderItem item={match.p1} side="left" />
-
-            <div style={{ width: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '2rem', fontStyle: 'italic' }}>
-                VS
+        <div style={{ height: 'calc(100vh - 100px)', padding: '1rem', display: 'flex', flexDirection: 'column' }}>
+            {/* Info Header */}
+            <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Round {tournament.currentRoundIndex + 1}</h2>
+                <div style={{ color: '#aaa' }}>{remainingMatches} duels remaining</div>
             </div>
 
-            <RenderItem item={match.p2} side="right" />
+            <div style={{ flex: 1, display: 'flex', gap: '1rem' }}>
+                <RenderItem item={match.p1} side="left" />
+
+                <div style={{ width: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '2rem', fontStyle: 'italic' }}>
+                    VS
+                </div>
+
+                <RenderItem item={match.p2} side="right" />
+            </div>
         </div>
     );
 }
