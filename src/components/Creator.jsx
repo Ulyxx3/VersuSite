@@ -105,7 +105,7 @@ export default function Creator({ onStart, onLoad }) {
                 </div>
 
                 <details>
-                    <summary style={{ cursor: 'pointer', color: '#aaa', marginBottom: '0.5rem' }}>Bulk Add (Paste List)</summary>
+                    <summary style={{ cursor: 'pointer', color: '#aaa', marginBottom: '0.5rem' }}>Playlist Add (Copy & Paste URL List)</summary>
                     <textarea
                         value={bulkText}
                         onChange={(e) => setBulkText(e.target.value)}
@@ -113,9 +113,9 @@ export default function Creator({ onStart, onLoad }) {
                         style={{ width: '100%', height: '100px', background: '#222', color: 'white', border: '1px solid #444', padding: '0.5rem' }}
                     />
                     <small style={{ color: '#888', display: 'block', marginTop: '0.2rem' }}>
-                        Tip: Use <a href="https://www.youtubeplaylistanalyzer.com" target="_blank" rel="noreferrer" style={{ color: '#4a9eff' }}>youtubeplaylistanalyzer.com</a> to extract links from a playlist.
+                        Tip: Use <a href="https://www.youtubeplaylistanalyzer.com" target="_blank" rel="noreferrer" style={{ color: '#4a9eff' }}> Youtube Playlist Analyzer</a> to extract links from a playlist.
                     </small>
-                    <button className="btn btn-primary" style={{ marginTop: '0.5rem' }} onClick={handleBulkAdd}>Process Bulk List</button>
+                    <button className="btn btn-primary" style={{ marginTop: '0.5rem' }} onClick={handleBulkAdd}>Add URL List</button>
                 </details>
             </div>
 
