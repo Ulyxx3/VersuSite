@@ -5,6 +5,7 @@ export default function Creator({ onStart, onLoad }) {
     const [title, setTitle] = useState('');
     const [items, setItems] = useState([]);
     const [newItemUrl, setNewItemUrl] = useState('');
+    const [newItemLabel, setNewItemLabel] = useState('');
     const [newItemType, setNewItemType] = useState(ITEM_TYPES.YOUTUBE);
     const [bulkText, setBulkText] = useState('');
 
@@ -12,10 +13,13 @@ export default function Creator({ onStart, onLoad }) {
         if (!newItemUrl) return;
         setItems([...items, {
             id: crypto.randomUUID(),
+            id: crypto.randomUUID(),
             content: newItemUrl,
+            label: newItemLabel,
             type: newItemType
         }]);
         setNewItemUrl('');
+        setNewItemLabel('');
     };
 
     const handleBulkAdd = () => {
@@ -101,6 +105,14 @@ export default function Creator({ onStart, onLoad }) {
                         onChange={(e) => setNewItemUrl(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddItem()}
                         style={{ flex: 1, padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Label (Optional)"
+                        value={newItemLabel}
+                        onChange={(e) => setNewItemLabel(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddItem()}
+                        style={{ width: '150px', padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
                     />
                     <button className="btn btn-blue" onClick={handleAddItem}>Add</button>
                 </div>
@@ -355,15 +367,31 @@ function TopListImporter({ onImport }) {
     const importMockGames = () => {
         // Mock Top Games
         const games = [
-            { name: "The Legend of Zelda: Ocarina of Time", year: 1998, img: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/123456/header.jpg" }, // Dummy img
-            { name: "Grand Theft Auto IV", year: 2008, img: "https://upload.wikimedia.org/wikipedia/en/b/b7/Grand_Theft_Auto_IV_cover.jpg" },
-            { name: "SoulCalibur", year: 1998, img: "" },
-            // In a real scenario we need a proxy to IGDB
+            { name: "The Legend of Zelda: Ocarina of Time", year: 1998 },
+            { name: "Grand Theft Auto IV", year: 2008 },
+            { name: "SoulCalibur", year: 1998 },
+            { name: "Super Mario Galaxy", year: 2007 },
+            { name: "Super Mario Galaxy 2", year: 2010 },
+            { name: "Red Dead Redemption 2", year: 2018 },
+            { name: "Grand Theft Auto V", year: 2013 },
+            { name: "Disco Elysium", year: 2019 },
+            { name: "The Legend of Zelda: Breath of the Wild", year: 2017 },
+            { name: "Tony Hawk's Pro Skater 2", year: 2000 },
+            { name: "Metroid Prime", year: 2002 },
+            { name: "Resident Evil 4", year: 2005 },
+            { name: "Perfect Dark", year: 2000 },
+            { name: "Halo: Combat Evolved", year: 2001 },
+            { name: "Half-Life 2", year: 2004 },
+            { name: "BioShock", year: 2007 },
+            { name: "GoldenEye 007", year: 1997 },
+            { name: "Uncharted 2: Among Thieves", year: 2009 },
+            { name: "Batman: Arkham City", year: 2011 },
+            { name: "Elden Ring", year: 2022 }
         ];
-        const items = Array.from({ length: 20 }).map((_, i) => ({
+        const items = games.map((game, i) => ({
             id: crypto.randomUUID(),
-            content: `https://via.placeholder.com/300x400?text=Game+${i + 1}`,
-            label: `Top Game #${i + 1} (202${i % 5})`,
+            content: `https://via.placeholder.com/300x400?text=${encodeURIComponent(game.name)}`,
+            label: `${game.name} (${game.year})`,
             type: ITEM_TYPES.IMAGE
         }));
         onImport(items);
@@ -371,10 +399,33 @@ function TopListImporter({ onImport }) {
     }
 
     const importMockMovies = () => {
-        const items = Array.from({ length: 20 }).map((_, i) => ({
+        const movies = [
+            { name: "The Shawshank Redemption", year: 1994 },
+            { name: "The Godfather", year: 1972 },
+            { name: "The Dark Knight", year: 2008 },
+            { name: "The Godfather Part II", year: 1974 },
+            { name: "12 Angry Men", year: 1957 },
+            { name: "Schindler's List", year: 1993 },
+            { name: "The Lord of the Rings: The Return of the King", year: 2003 },
+            { name: "Pulp Fiction", year: 1994 },
+            { name: "The Lord of the Rings: The Fellowship of the Ring", year: 2001 },
+            { name: "The Good, the Bad and the Ugly", year: 1966 },
+            { name: "Forrest Gump", year: 1994 },
+            { name: "Fight Club", year: 1999 },
+            { name: "Inception", year: 2010 },
+            { name: "The Lord of the Rings: The Two Towers", year: 2002 },
+            { name: "Star Wars: Episode V - The Empire Strikes Back", year: 1980 },
+            { name: "The Matrix", year: 1999 },
+            { name: "Goodfellas", year: 1990 },
+            { name: "One Flew Over the Cuckoo's Nest", year: 1975 },
+            { name: "Se7en", year: 1995 },
+            { name: "It's a Wonderful Life", year: 1946 }
+        ];
+
+        const items = movies.map((movie, i) => ({
             id: crypto.randomUUID(),
-            content: `https://via.placeholder.com/300x400?text=Movie+${i + 1}`,
-            label: `Top Movie #${i + 1} (199${i % 9})`,
+            content: `https://via.placeholder.com/300x400?text=${encodeURIComponent(movie.name)}`,
+            label: `${movie.name} (${movie.year})`,
             type: ITEM_TYPES.IMAGE
         }));
         onImport(items);
