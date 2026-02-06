@@ -14,7 +14,7 @@ IGDB is owned by Twitch/Amazon. To use their API, you need a Twitch Developer ac
 3.  Click **"Register Your Application"**.
 4.  Fill in the details:
     - **Name**: Versusite (or similar)
-    - **OAuth Redirect URLs**: `http://localhost` (Safe default for local apps)
+    - **OAuth Redirect URLs**: `https://localhost` (**Important**: Must use HTTPS)
     - **Category**: Game Integration
 5.  Once created, click **Manage** to see your keys:
     - **Client ID**: (Public)

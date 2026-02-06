@@ -417,47 +417,40 @@ function TopListImporter({ onImport }) {
         alert(`Imported ${items.length} Mock Games (IGDB requires API Key)`);
     }
 
-    const importMockMovies = () => {
-        const movies = [
-            { name: "The Shawshank Redemption", year: 1994 },
-            { name: "The Godfather", year: 1972 },
-            { name: "The Dark Knight", year: 2008 },
-            { name: "The Godfather Part II", year: 1974 },
-            { name: "12 Angry Men", year: 1957 },
-            { name: "Schindler's List", year: 1993 },
-            { name: "The Lord of the Rings: The Return of the King", year: 2003 },
-            { name: "Pulp Fiction", year: 1994 },
-            { name: "The Lord of the Rings: The Fellowship of the Ring", year: 2001 },
-            { name: "The Good, the Bad and the Ugly", year: 1966 },
-            { name: "Forrest Gump", year: 1994 },
-            { name: "Fight Club", year: 1999 },
-            { name: "Inception", year: 2010 },
-            { name: "The Lord of the Rings: The Two Towers", year: 2002 },
-            { name: "Star Wars: Episode V - The Empire Strikes Back", year: 1980 },
-            { name: "The Matrix", year: 1999 },
-            { name: "Goodfellas", year: 1990 },
-            { name: "One Flew Over the Cuckoo's Nest", year: 1975 },
-            { name: "Se7en", year: 1995 },
-            { name: "It's a Wonderful Life", year: 1946 }
-        ];
+    const importTMDBMovies = async () => {
+        setLoading(true);
+        const TMDB_API_KEY = '12e3760af5607b44acdfb130bf0c9678';
+        try {
+            const pagesNeeded = Math.ceil(importCount / 20);
+            let allMovies = [];
 
-        let targetList = [...movies];
-        if (importCount > movies.length) {
-            const needed = importCount - movies.length;
-            for (let i = 0; i < needed; i++) {
-                targetList.push({ name: `Top Movie #${movies.length + i + 1}`, year: 1950 + (i % 70) });
+            for (let i = 1; i <= pagesNeeded; i++) {
+                const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&page=${i}`);
+                if (!response.ok) throw new Error(`TMDB API Error: ${response.statusText}`);
+                const data = await response.json();
+                if (data.results) {
+                    allMovies = [...allMovies, ...data.results];
+                }
+                // Small delay to be safe
+                await new Promise(r => setTimeout(r, 100));
             }
-        }
 
-        const items = targetList.slice(0, importCount).map((movie, i) => ({
-            id: crypto.randomUUID(),
-            content: `https://placehold.co/300x400/png?text=${encodeURIComponent(movie.name)}`,
-            label: `${movie.name} (${movie.year})`,
-            type: ITEM_TYPES.IMAGE
-        }));
-        onImport(items);
-        alert(`Imported ${items.length} Mock Movies (IMDb requires API Key)`);
-    }
+            const items = allMovies.slice(0, importCount).map(movie => ({
+                id: crypto.randomUUID(),
+                content: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                label: `${movie.title} (${movie.release_date?.substring(0, 4) || '?'})`,
+                type: ITEM_TYPES.IMAGE
+            }));
+
+            onImport(items);
+            alert(`Imported ${items.length} Movies from TMDB!`);
+        } catch (e) {
+            console.error(e);
+            alert('Failed to fetch Movies: ' + e.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
@@ -493,14 +486,15 @@ function TopListImporter({ onImport }) {
                 </button>
                 <button
                     className="btn btn-primary"
-                    onClick={importMockMovies}
-                    style={{ background: '#f5c518', color: 'black' }} // IMDb Color
+                    onClick={importTMDBMovies}
+                    disabled={loading}
+                    style={{ background: '#01b4e4', color: 'white' }} // TMDB Color
                 >
-                    IMDb Top Movies (Mock)
+                    {loading ? 'Loading...' : 'TMDB Top Movies (Real)'}
                 </button>
             </div>
             <p style={{ color: '#888', fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                Note: MAL uses Jikan API. IGDB/IMDb require keys, showing mock data.
+                Note: MAL and TMDB use real APIs. IGDB requires a Twitch key, showing mock data.
             </p>
         </div>
     );
