@@ -6,7 +6,8 @@
   --color-primary-blue: #2a2aff;
   --color-panel-bg: rgba(255, 255, 255, 0.05);
   --color-border: rgba(255, 255, 255, 0.1);
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-main: 'General Serif', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Rammetto One', cursive, sans-serif;
 }
 
 * {
@@ -49,7 +50,9 @@ button {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-weight: 800;
+  color: transparent;
+  font-family: var(--font-heading);
+  font-weight: 400;
 }
 
 .btn {
