@@ -145,7 +145,7 @@ function ResultsView({ tournament, onHome }) {
           background: 'var(--color-bg-dark)',
           borderRadius: '20px',
           border: '2px solid var(--color-primary-blue)',
-          boxShadow: '0 0 50px rgba(46, 213, 115, 0.2)'
+          boxShadow: '0 0 50px rgba(43, 110, 235, 1)'
         }}>
           {getPreview(tournament.winner, true)}
         </div>
