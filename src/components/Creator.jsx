@@ -160,15 +160,16 @@ function PlaylistImporter({ onImport }) {
         setError('');
 
         try {
-            // Use AllOrigins as a CORS proxy
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(playlistUrl)}`;
+            // Use corsproxy.io as a more reliable CORS proxy
+            // It returns the raw text, unlike allorigins which wraps in JSON
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(playlistUrl)}`;
             const response = await fetch(proxyUrl);
-            const data = await response.json();
 
-            if (!data.contents) throw new Error('No content received from proxy');
+            if (!response.ok) throw new Error(`Proxy error: ${response.status}`);
+
+            const html = await response.text();
 
             // Find ytInitialData
-            const html = data.contents;
             const startStr = 'var ytInitialData = ';
             const startIdx = html.indexOf(startStr);
 
