@@ -342,13 +342,18 @@ function TopListImporter({ onImport }) {
     const importJikanTopAnime = async () => {
         setLoading(true);
         try {
-            // Fetch top 50 (2 pages)
-            const p1 = await fetch('https://api.jikan.moe/v4/top/anime?page=1').then(r => r.json());
-            let allAnime = p1.data || [];
+            const pagesNeeded = Math.ceil(importCount / 25);
+            let allAnime = [];
 
-            if (importCount > 25) {
-                const p2 = await fetch('https://api.jikan.moe/v4/top/anime?page=2').then(r => r.json());
-                allAnime = [...allAnime, ...(p2.data || [])];
+            for (let i = 1; i <= pagesNeeded; i++) {
+                const response = await fetch(`https://api.jikan.moe/v4/top/anime?page=${i}`);
+                if (!response.ok) throw new Error(`Jikan API Error: ${response.statusText}`);
+                const data = await response.json();
+                if (data.data) {
+                    allAnime = [...allAnime, ...data.data];
+                }
+                // Small delay to be nice to Jikan API (limit is ~3/sec)
+                await new Promise(r => setTimeout(r, 350));
             }
 
             const items = allAnime.slice(0, importCount).map(anime => ({
