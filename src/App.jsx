@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Creator from './components/Creator';
 import BattleArena from './components/BattleArena';
 import { ITEM_TYPES, getRankings } from './utils/tournamentLogic';
