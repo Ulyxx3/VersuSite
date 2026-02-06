@@ -108,7 +108,7 @@ export default function Creator({ onStart, onLoad }) {
                 <PlaylistImporter onImport={(newItems) => setItems(prev => [...prev, ...newItems])} />
 
                 <details style={{ marginTop: '1rem' }}>
-                    <summary style={{ cursor: 'pointer', color: '#aaa', marginBottom: '0.5rem' }}>Bulk Add (Copy & Paste URL List)</summary>
+                    <summary style={{ cursor: 'pointer', color: '#aaa', marginBottom: '0.5rem' }}>+100 Add (Copy & Paste URL List with <a href="https://www.youtubeplaylistanalyzer.com" target="_blank">Youtube Playlist Analyzer</a>)</summary>
                     <textarea
                         value={bulkText}
                         onChange={(e) => setBulkText(e.target.value)}
