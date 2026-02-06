@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ITEM_TYPES, getNextMatch, resolveMatch } from '../utils/tournamentLogic';
+import DynamicBackground from './DynamicBackground';
 
 // Helper to extract YouTube ID
 const getYoutubeId = (url) => {
@@ -118,16 +119,7 @@ const RenderItem = ({ item, side, title, onVote }) => {
 export default function BattleArena({ tournament, onUpdate, onComplete }) {
     const [match, setMatch] = useState(null);
     const [titles, setTitles] = useState({ p1: null, p2: null });
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-    // Track mouse position
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
 
     // Calculate match stats
     const totalMatches = tournament ? tournament.items.length - 1 : 0;
@@ -191,17 +183,7 @@ export default function BattleArena({ tournament, onUpdate, onComplete }) {
     return (
         <div style={{ height: 'calc(100vh - 120px)', padding: '0 2rem 2rem 2rem', display: 'flex', flexDirection: 'column', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
             {/* Dynamic Background */}
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: -1,
-                background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, ${mousePos.x < window.innerWidth / 2 ? 'rgba(255, 42, 42, 0.25)' : 'rgba(42, 42, 255, 0.25)'} 0%, rgba(0,0,0,0) 50%)`,
-                pointerEvents: 'none',
-                transition: 'background 0.2s ease-out'
-            }} />
+            <DynamicBackground />
 
             {/* Info Header */}
             <div className="animate-fade-in" style={{ textAlign: 'center', marginBottom: '2rem' }}>
