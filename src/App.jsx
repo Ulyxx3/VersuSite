@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Creator from './components/Creator';
 import BattleArena from './components/BattleArena';
 import { ITEM_TYPES, getRankings } from './utils/tournamentLogic';
+import logo from './assets/logo.svg';
 
 function App() {
   const [view, setView] = useState('LANDING'); // LANDING, CREATOR, BATTLE, RESULTS
@@ -36,15 +37,15 @@ function App() {
   return (
     <div className="min-h-screen">
       <header className="container" style={{ padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <h1
+        <img
+          src={logo}
+          alt="Versusite"
           className="title-gradient animate-fade-in"
-          style={{ fontSize: '3rem', cursor: 'pointer', letterSpacing: '-2px' }}
+          style={{ height: '4rem', cursor: 'pointer' }}
           onClick={() => {
             if (window.confirm('Return to home? Current progress may be lost.')) setView('LANDING');
           }}
-        >
-          VERSUSITE
-        </h1>
+        />
       </header>
 
       <main className="container">
