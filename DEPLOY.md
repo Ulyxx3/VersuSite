@@ -6,6 +6,16 @@ Assurez-vous que Node.js et npm sont installés et accessibles dans votre termin
 
 ## Étapes de Déploiement
 
+### 0. ⚠️ IMPORTANT - Première Installation
+
+**Si vous venez de cloner le projet ou si c'est la première fois**, installez d'abord toutes les dépendances :
+
+```bash
+npm install
+```
+
+Cette commande va installer toutes les dépendances nécessaires (vite, react, etc.) listées dans `package.json`.
+
 ### 1. Installer gh-pages (Première fois seulement)
 
 ```bash
@@ -38,6 +48,9 @@ Votre site sera accessible à :
 ## Commandes Utiles
 
 ```bash
+# Installer les dépendances (première fois)
+npm install
+
 # Développement local
 npm run dev
 
@@ -50,6 +63,12 @@ npm run preview
 # Deploy vers GitHub Pages
 npm run deploy
 ```
+
+## Troubleshooting
+
+**Erreur "vite n'est pas reconnu"** : Lancez `npm install` pour installer les dépendances
+
+**Erreur "gh-pages n'est pas reconnu"** : Lancez `npm install --save-dev gh-pages`
 
 ## Notes
 
