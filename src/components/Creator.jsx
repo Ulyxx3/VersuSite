@@ -13,7 +13,6 @@ export default function Creator({ onStart, onLoad }) {
         if (!newItemUrl) return;
         setItems([...items, {
             id: crypto.randomUUID(),
-            id: crypto.randomUUID(),
             content: newItemUrl,
             label: newItemLabel,
             type: newItemType
@@ -89,7 +88,7 @@ export default function Creator({ onStart, onLoad }) {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
             }}>
-                Create Tournament
+                <a style={{ color: 'white', textDecoration: 'none' }}>Create Tournament</a>
             </h2>
 
             <div style={{ marginBottom: '2rem' }}>

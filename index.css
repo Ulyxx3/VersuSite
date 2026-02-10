@@ -322,10 +322,10 @@ h3 {
 
 /* Footer */
 .footer {
+  width: 100%;
   text-align: center;
-  padding: 2rem;
-  margin-top: 4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  margin-top: auto;
   color: var(--color-text-muted);
   font-size: 0.9rem;
 }
@@ -397,7 +397,7 @@ select {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--color-text-primary);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 0.75rem;
   font-family: inherit;
   transition: all 0.3s ease;
@@ -418,4 +418,13 @@ input[type="number"]:hover,
 textarea:hover,
 select:hover {
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Details and Summary */
+details {
+  border-radius: 12px;
+}
+
+summary {
+  border-radius: 12px;
 }
