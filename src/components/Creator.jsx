@@ -76,8 +76,21 @@ export default function Creator({ onStart, onLoad }) {
     };
 
     return (
-        <div className="glass-panel" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ marginBottom: '1.5rem' }}>Create Tournament</h2>
+        <div className="glass-panel animate-slide-up" style={{
+            padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+            maxWidth: '900px',
+            margin: '2rem auto'
+        }}>
+            <h2 style={{
+                marginBottom: '2rem',
+                fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
+                background: 'linear-gradient(135deg, var(--color-primary-blue), var(--color-accent-purple))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+            }}>
+                Create Tournament
+            </h2>
 
             <div style={{ marginBottom: '2rem' }}>
                 <input
@@ -85,14 +98,28 @@ export default function Creator({ onStart, onLoad }) {
                     placeholder="Tournament Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    style={{ width: '100%', padding: '0.8rem', fontSize: '1.2rem', marginBottom: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid #333', color: 'white' }}
+                    style={{
+                        width: '100%',
+                        fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
+                        marginBottom: '1.5rem',
+                        fontWeight: '500'
+                    }}
                 />
 
-                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '0.75rem',
+                    marginBottom: '1rem'
+                }}>
                     <select
                         value={newItemType}
                         onChange={(e) => setNewItemType(e.target.value)}
-                        style={{ padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
+                        style={{
+                            padding: '0.75rem',
+                            fontSize: '1rem',
+                            cursor: 'pointer'
+                        }}
                     >
                         <option value={ITEM_TYPES.YOUTUBE}>YouTube</option>
                         <option value={ITEM_TYPES.IMAGE}>Image</option>
@@ -104,17 +131,37 @@ export default function Creator({ onStart, onLoad }) {
                         value={newItemUrl}
                         onChange={(e) => setNewItemUrl(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddItem()}
-                        style={{ flex: 1, padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
+                        style={{ fontSize: '1rem' }}
                     />
+                </div>
+
+                <div style={{
+                    display: 'flex',
+                    gap: '0.75rem',
+                    flexWrap: 'wrap'
+                }}>
                     <input
                         type="text"
                         placeholder="Label (Optional)"
                         value={newItemLabel}
                         onChange={(e) => setNewItemLabel(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleAddItem()}
-                        style={{ width: '150px', padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
+                        style={{
+                            flex: '1 1 200px',
+                            fontSize: '1rem'
+                        }}
                     />
-                    <button className="btn btn-blue" onClick={handleAddItem}>Add</button>
+                    <button
+                        className="btn btn-blue animate-scale-in"
+                        onClick={handleAddItem}
+                        style={{
+                            padding: '0.75rem 2rem',
+                            fontSize: '1rem',
+                            fontWeight: '700'
+                        }}
+                    >
+                        Add Item
+                    </button>
                 </div>
 
                 {newItemType === ITEM_TYPES.YOUTUBE && (
@@ -125,37 +172,175 @@ export default function Creator({ onStart, onLoad }) {
                     <TopListImporter onImport={(newItems) => setItems(prev => [...prev, ...newItems])} />
                 )}
 
-                <details style={{ marginTop: '1rem' }}>
-                    <summary style={{ cursor: 'pointer', color: '#aaa', marginBottom: '0.5rem' }}>+100 Add (Copy & Paste URL List with <a href="https://www.youtubeplaylistanalyzer.com" target="_blank">Youtube Playlist Analyzer</a>)</summary>
+                <details style={{ marginTop: '1.5rem' }}>
+                    <summary style={{
+                        cursor: 'pointer',
+                        color: 'var(--color-text-muted)',
+                        marginBottom: '0.75rem',
+                        padding: '0.5rem',
+                        borderRadius: '8px',
+                        transition: 'all 0.2s',
+                        fontWeight: '600'
+                    }}>
+                        📋 Bulk Add URLs (use <a href="https://www.youtubeplaylistanalyzer.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary-blue)' }}>YouTube Playlist Analyzer</a>)
+                    </summary>
                     <textarea
                         value={bulkText}
                         onChange={(e) => setBulkText(e.target.value)}
                         placeholder="Paste URLs one per line..."
-                        style={{ width: '100%', height: '100px', background: '#222', color: 'white', border: '1px solid #444', padding: '0.5rem' }}
+                        style={{
+                            width: '100%',
+                            height: '120px',
+                            fontSize: '0.95rem',
+                            fontFamily: 'monospace'
+                        }}
                     />
-                    <button className="btn btn-primary" style={{ marginTop: '0.5rem' }} onClick={handleBulkAdd}>Add URL List</button>
+                    <button
+                        className="btn btn-primary"
+                        style={{ marginTop: '0.75rem' }}
+                        onClick={handleBulkAdd}
+                    >
+                        Add URL List
+                    </button>
                 </details>
             </div>
 
             <div style={{ marginBottom: '2rem' }}>
-                <h3>Items ({items.length})</h3>
-                <div style={{ maxHeight: '300px', overflowY: 'auto', background: 'rgba(0,0,0,0.2)', padding: '1rem', marginTop: '0.5rem' }}>
-                    {items.map((item, idx) => (
-                        <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px solid #333' }}>
-                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80%' }}>
-                                [{item.type}] {item.label || item.content}
-                            </span>
-                            <button onClick={() => setItems(items.filter((_, i) => i !== idx))} style={{ color: 'red' }}>&times;</button>
-                        </div>
-                    ))}
+                <h3 style={{
+                    marginBottom: '1rem',
+                    fontSize: 'clamp(1.3rem, 3vw, 1.6rem)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                }}>
+                    Items
+                    <span style={{
+                        background: 'var(--color-primary-blue)',
+                        color: '#000',
+                        padding: '0.2rem 0.6rem',
+                        borderRadius: '20px',
+                        fontSize: '0.9rem',
+                        fontWeight: '900'
+                    }}>
+                        {items.length}
+                    </span>
+                </h3>
+                <div style={{
+                    maxHeight: '350px',
+                    overflowY: 'auto',
+                    background: 'rgba(0,0,0,0.3)',
+                    padding: '1rem',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.05)'
+                }}>
+                    {items.length === 0 ? (
+                        <p style={{
+                            textAlign: 'center',
+                            color: 'var(--color-text-muted)',
+                            padding: '2rem',
+                            fontSize: '1.1rem'
+                        }}>
+                            No items yet. Add some above! 🎮
+                        </p>
+                    ) : (
+                        items.map((item, idx) => (
+                            <div
+                                key={item.id}
+                                className="animate-slide-in-left"
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    padding: '0.75rem',
+                                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                    transition: 'all 0.2s',
+                                    borderRadius: '8px',
+                                    marginBottom: '0.5rem'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                            >
+                                <span style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
+                                    maxWidth: 'calc(100% - 80px)',
+                                    fontSize: 'clamp(0.9rem, 2vw, 1rem)'
+                                }}>
+                                    <span style={{
+                                        color: 'var(--color-accent-purple)',
+                                        fontWeight: '700',
+                                        marginRight: '0.5rem',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        [{item.type}]
+                                    </span>
+                                    {item.label || item.content}
+                                </span>
+                                <button
+                                    onClick={() => setItems(items.filter((_, i) => i !== idx))}
+                                    style={{
+                                        color: 'var(--color-primary-red)',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        fontSize: '1.5rem',
+                                        cursor: 'pointer',
+                                        padding: '0.25rem 0.5rem',
+                                        transition: 'all 0.2s',
+                                        borderRadius: '4px'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.background = 'rgba(255, 71, 87, 0.2)';
+                                        e.target.style.transform = 'scale(1.2)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.background = 'transparent';
+                                        e.target.style.transform = 'scale(1)';
+                                    }}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <button className="btn btn-red" style={{ flex: 1 }} onClick={handleStart}>Start Battle</button>
-                <button className="btn btn-primary" onClick={handleExport}>Save JSON</button>
-                <label className="btn btn-primary" style={{ cursor: 'pointer' }}>
-                    Import JSON
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '1rem'
+            }}>
+                <button
+                    className="btn btn-red animate-scale-in delay-100"
+                    onClick={handleStart}
+                    style={{
+                        padding: '1rem 2rem',
+                        fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
+                        fontWeight: '800',
+                        gridColumn: 'span 2'
+                    }}
+                >
+                    🎮 Start Battle
+                </button>
+                <button
+                    className="btn btn-primary animate-scale-in delay-200"
+                    onClick={handleExport}
+                    style={{ fontSize: 'clamp(0.9rem, 2vw, 1rem)' }}
+                >
+                    💾 Save JSON
+                </button>
+                <label
+                    className="btn btn-primary animate-scale-in delay-300"
+                    style={{
+                        cursor: 'pointer',
+                        fontSize: 'clamp(0.9rem, 2vw, 1rem)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    📂 Import JSON
                     <input type="file" hidden accept=".json" onChange={handleImport} />
                 </label>
             </div>
@@ -308,27 +493,46 @@ function PlaylistImporter({ onImport }) {
     };
 
     return (
-        <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-            <h4 style={{ margin: '0 0 0.5rem 0' }}>Import from YouTube Playlist</h4>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{
+            marginTop: '1.5rem',
+            padding: '1.5rem',
+            background: 'rgba(46, 145, 255, 0.05)',
+            borderRadius: '12px',
+            border: '1px solid rgba(46, 145, 255, 0.2)'
+        }}>
+            <h4 style={{
+                margin: '0 0 1rem 0',
+                fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
+                color: 'var(--color-primary-blue)'
+            }}>
+                📺 Import from YouTube Playlist
+            </h4>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <input
                     type="text"
                     placeholder="https://www.youtube.com/playlist?list=..."
                     value={playlistUrl}
                     onChange={(e) => setPlaylistUrl(e.target.value)}
-                    style={{ flex: 1, padding: '0.5rem', background: '#222', color: 'white', border: '1px solid #444' }}
+                    style={{
+                        flex: '1 1 300px',
+                        fontSize: '0.95rem'
+                    }}
                 />
                 <button
                     className="btn btn-blue"
                     onClick={fetchPlaylist}
                     disabled={loading}
+                    style={{
+                        padding: '0.75rem 1.5rem',
+                        fontSize: '1rem'
+                    }}
                 >
-                    {loading ? 'Loading...' : 'Import'}
+                    {loading ? '⏳ Loading...' : '📥 Import'}
                 </button>
             </div>
-            {error && <p style={{ color: '#ff6b6b', marginTop: '0.5rem', fontSize: '0.9rem' }}>{error}</p>}
-            <p style={{ color: '#888', fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                Note: Fetches up to 100 first videos.
+            {error && <p style={{ color: '#ff6b6b', marginTop: '0.75rem', fontSize: '0.9rem', fontWeight: '500' }}>⚠️ {error}</p>}
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '0.75rem', marginBottom: 0 }}>
+                💡 Note: Fetches up to 100 first videos.
             </p>
         </div>
     );
@@ -453,48 +657,65 @@ function TopListImporter({ onImport }) {
     };
 
     return (
-        <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-            <h4 style={{ margin: '0 0 0.5rem 0' }}>Import Top Lists</h4>
+        <div style={{
+            marginTop: '1.5rem',
+            padding: '1.5rem',
+            background: 'rgba(174, 112, 255, 0.05)',
+            borderRadius: '12px',
+            border: '1px solid rgba(174, 112, 255, 0.2)'
+        }}>
+            <h4 style={{
+                margin: '0 0 1rem 0',
+                fontSize: 'clamp(1.1rem, 2.5vw, 1.3rem)',
+                color: 'var(--color-accent-purple)'
+            }}>
+                🎬 Import Top Lists
+            </h4>
 
-            <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <label style={{ color: '#ccc' }}>Item Count:</label>
+            <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <label style={{ color: 'var(--color-text-primary)', fontWeight: '600' }}>Item Count:</label>
                 <input
                     type="number"
                     min="2"
                     max="100"
                     value={importCount}
                     onChange={(e) => setImportCount(Number(e.target.value))}
-                    style={{ width: '80px', padding: '0.3rem', background: '#222', color: 'white', border: '1px solid #444', textAlign: 'center' }}
+                    style={{
+                        width: '80px',
+                        textAlign: 'center',
+                        fontWeight: '700',
+                        fontSize: '1rem'
+                    }}
                 />
             </div>
 
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
                 <button
                     className="btn btn-blue"
                     onClick={importJikanTopAnime}
                     disabled={loading}
-                    style={{ background: '#2e51a2' }} // MAL Color
+                    style={{ background: '#2e51a2', fontSize: 'clamp(0.85rem, 2vw, 0.95rem)' }}
                 >
-                    {loading ? 'Loading...' : 'MAL Top Anime (Real)'}
+                    {loading ? '⏳ Loading...' : '📺 MAL Top Anime'}
                 </button>
                 <button
                     className="btn btn-primary"
                     onClick={importMockGames}
-                    style={{ background: '#9147ff' }} // Twitch/IGDB Color
+                    style={{ background: '#9147ff', fontSize: 'clamp(0.85rem, 2vw, 0.95rem)' }}
                 >
-                    IGDB Top Games (Mock)
+                    🎮 IGDB Top Games
                 </button>
                 <button
                     className="btn btn-primary"
                     onClick={importTMDBMovies}
                     disabled={loading}
-                    style={{ background: '#01b4e4', color: 'white' }} // TMDB Color
+                    style={{ background: '#01b4e4', color: 'white', fontSize: 'clamp(0.85rem, 2vw, 0.95rem)' }}
                 >
-                    {loading ? 'Loading...' : 'TMDB Top Movies (Real)'}
+                    {loading ? '⏳ Loading...' : '🎬 TMDB Top Movies'}
                 </button>
             </div>
-            <p style={{ color: '#888', fontSize: '0.8rem', marginTop: '0.5rem' }}>
-                Note: MAL and TMDB use real APIs. IGDB requires a Twitch key, showing mock data.
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginTop: '1rem', marginBottom: 0 }}>
+                💡 Note: MAL and TMDB use real APIs. IGDB shows mock data.
             </p>
         </div>
     );

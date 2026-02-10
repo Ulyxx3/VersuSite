@@ -183,37 +183,63 @@ export default function BattleArena({ tournament, onUpdate, onComplete }) {
 
 
     return (
-        <div style={{ height: 'calc(100vh - 120px)', padding: '0 2rem 2rem 2rem', display: 'flex', flexDirection: 'column', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
+        <div style={{
+            height: 'calc(100vh - 120px)',
+            padding: 'clamp(1rem, 2vw, 2rem)',
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '1600px',
+            margin: '0 auto',
+            width: '100%'
+        }}>
             {/* Dynamic Background */}
             <DynamicBackground />
 
             {/* Info Header */}
-            <div className="animate-fade-in" style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '2rem', margin: 0, fontWeight: '800', letterSpacing: '-1px' }}>
+            <div className="animate-fade-in" style={{ textAlign: 'center', marginBottom: 'clamp(1rem, 3vw, 2rem)' }}>
+                <h2 style={{
+                    fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                    margin: 0,
+                    fontWeight: '800',
+                    letterSpacing: '-1px'
+                }}>
                     Round <span style={{ color: 'var(--color-accent-purple)' }}>{tournament.currentRoundIndex + 1}</span>
                 </h2>
-                <div style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', marginTop: '0.5rem' }}>
-                    {remainingMatches} duels remaining
+                <div style={{
+                    color: 'var(--color-text-muted)',
+                    fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)',
+                    marginTop: '0.5rem',
+                    fontWeight: '500'
+                }}>
+                    {remainingMatches} duel{remainingMatches !== 1 ? 's' : ''} remaining
                 </div>
             </div>
 
-            <div style={{ flex: 1, display: 'flex', gap: '4rem', alignItems: 'center' }}>
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                gap: 'clamp(1rem, 3vw, 4rem)',
+                alignItems: 'center',
+                flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+                justifyContent: 'center'
+            }}>
                 <RenderItem item={match.p1} side="left" title={titles.p1} onVote={() => handleVote(match.p1.id)} />
 
                 <div className="animate-fade-in delay-200" style={{
-                    width: '80px',
-                    height: '80px',
+                    width: 'clamp(60px, 10vw, 80px)',
+                    height: 'clamp(60px, 10vw, 80px)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: '900',
-                    fontSize: '2rem',
+                    fontSize: 'clamp(1.5rem, 4vw, 2rem)',
                     fontStyle: 'italic',
                     background: 'var(--color-bg-card)',
                     borderRadius: '50%',
                     border: '1px solid rgba(255,255,255,0.1)',
                     boxShadow: '0 0 30px rgba(0,0,0,0.5)',
-                    zIndex: 10
+                    zIndex: 10,
+                    flexShrink: 0
                 }}>
                     <span className="title-gradient">VS</span>
                 </div>

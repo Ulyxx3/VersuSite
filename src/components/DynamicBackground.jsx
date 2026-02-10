@@ -12,16 +12,31 @@ export default function DynamicBackground() {
     }, []);
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: -1,
-            background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, ${mousePos.x < window.innerWidth / 2 ? 'rgba(255, 42, 42, 0.25)' : 'rgba(42, 42, 255, 0.25)'} 0%, rgba(0,0,0,0) 50%)`,
-            pointerEvents: 'none',
-            transition: 'background 0.2s ease-out'
-        }} />
+        <>
+            {/* Darker base overlay */}
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: -2,
+                background: 'rgba(0, 0, 0, 0.6)',
+                pointerEvents: 'none'
+            }} />
+
+            {/* Enhanced mouse gradient effect */}
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: -1,
+                background: `radial-gradient(circle 600px at ${mousePos.x}px ${mousePos.y}px, ${mousePos.x < window.innerWidth / 2 ? 'rgba(255, 71, 87, 0.4)' : 'rgba(46, 145, 255, 0.4)'} 0%, rgba(0,0,0,0) 70%)`,
+                pointerEvents: 'none',
+                transition: 'background 0.15s ease-out'
+            }} />
+        </>
     );
 }
