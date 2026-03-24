@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import Creator from './components/Creator';
 import BattleArena from './components/BattleArena';
+import Footer from './components/Footer';
 import { ITEM_TYPES, getRankings } from './utils/tournamentLogic';
 import logo from './assets/logo.svg';
+import backgroundImg from './assets/Background.jpg';
 
 function App() {
   const [view, setView] = useState('LANDING'); // LANDING, CREATOR, BATTLE, RESULTS
@@ -48,43 +50,149 @@ function App() {
         />
       </header>
 
+
       <main className="container">
         {view === 'LANDING' && (
-          <div className="animate-slide-up" style={{ textAlign: 'center', marginTop: '6rem' }}>
-            <h2 style={{ fontSize: '5rem', marginBottom: '1.5rem', fontWeight: '900', letterSpacing: '-3px', lineHeight: '1' }}>
-              THE ULTIMATE <br />
-              <span className="title-gradient">VERSUS</span> ARENA
-            </h2>
-            <p style={{ color: 'var(--color-text-muted)', marginBottom: '4rem', fontSize: '1.5rem', maxWidth: '700px', margin: '0 auto 4rem', lineHeight: '1.6' }}>
-              Create tournaments. Rank everything. Decide the winner.<br />
-              Support for Images, YouTube Videos, and Text.
-            </p>
-            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+          <div style={{
+            minHeight: 'calc(100vh - 200px)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            position: 'relative',
+            padding: '2rem'
+          }}>
+            {/* Background Image - Plus visible */}
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${backgroundImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.70,
+              zIndex: -1,
+              filter: 'blur(1px)'
+            }} />
+
+            {/* Contenu centré */}
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}>
+              <div className="animate-slide-up delay-200" style={{ maxWidth: '800px', marginBottom: '3rem' }}>
+                <p style={{
+                  fontFamily: "'Cantora One', sans-serif",
+                  color: 'var(--color-text-primary)',
+                  marginBottom: '0.5rem',
+                  fontSize: 'clamp(2rem, 5vw, 3rem)',
+                  fontWeight: '400',
+                  lineHeight: '1.2'
+                }}>
+                  Create tournaments,
+                </p>
+                <p style={{
+                  fontFamily: "'Cantora One', sans-serif",
+                  color: 'var(--color-text-primary)',
+                  marginBottom: '0.5rem',
+                  fontSize: 'clamp(2rem, 5vw, 3rem)',
+                  fontWeight: '400',
+                  lineHeight: '1.2'
+                }}>
+                  Rank everything,
+                </p>
+                <p style={{
+                  fontFamily: "'Cantora One', sans-serif",
+                  color: 'var(--color-text-primary)',
+                  marginBottom: '2.5rem',
+                  fontSize: 'clamp(2rem, 5vw, 3rem)',
+                  fontWeight: '400',
+                  lineHeight: '1.2'
+                }}>
+                  Decide the winner !
+                </p>
+                <p style={{
+                  color: 'var(--color-text-muted)',
+                  fontSize: 'clamp(1.1rem, 3vw, 1.4rem)',
+                  lineHeight: '1.6',
+                  marginBottom: '3rem',
+                  fontWeight: '500'
+                }}>
+                  Support for Images, YouTube Videos, and Text.
+                </p>
+              </div>
+
               <button
-                className="btn btn-red"
-                style={{ fontSize: '1.3rem', padding: '1.2rem 3rem' }}
+                className="btn btn-blue animate-slide-up delay-300"
+                style={{ fontSize: 'clamp(1.1rem, 3vw, 1.3rem)', padding: '1.1rem 2.8rem', fontWeight: '700' }}
                 onClick={() => setView('CREATOR')}
               >
-                CREATE TOURNAMENT
+                Start a Tournament
               </button>
             </div>
+
+            {/* Footer en bas */}
+            <Footer />
           </div>
         )}
 
         {view === 'CREATOR' && (
-          <Creator onStart={startTournament} onLoad={startTournament} />
+          <div style={{ position: 'relative', minHeight: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
+            {/* Overlay sombre pour Creator seulement */}
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url(${backgroundImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.40,
+              zIndex: -2,
+              filter: 'blur(3px)'
+            }} />
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              background: 'rgba(0, 0, 0, 0.7)',
+              zIndex: -1
+            }} />
+            <div style={{ flex: 1 }}>
+              <Creator onStart={startTournament} onLoad={startTournament} />
+            </div>
+            <Footer />
+          </div>
         )}
 
         {view === 'BATTLE' && tournament && (
-          <BattleArena
-            tournament={tournament}
-            onUpdate={updateTournament}
-            onComplete={(t) => { setTournament(t); setView('RESULTS'); }}
-          />
+          <div style={{ minHeight: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ flex: 1 }}>
+              <BattleArena
+                tournament={tournament}
+                onUpdate={updateTournament}
+                onComplete={(t) => { setTournament(t); setView('RESULTS'); }}
+              />
+            </div>
+            <Footer />
+          </div>
         )}
 
         {view === 'RESULTS' && tournament && tournament.winner && (
-          <ResultsView tournament={tournament} onHome={() => setView('LANDING')} />
+          <div style={{ minHeight: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ flex: 1 }}>
+              <ResultsView tournament={tournament} onHome={() => setView('LANDING')} />
+            </div>
+            <Footer />
+          </div>
         )}
       </main>
     </div>
